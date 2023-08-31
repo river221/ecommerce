@@ -1,0 +1,33 @@
+.header {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  @media (max-width: 1200px) {
+    padding: 0 16px;
+  }
+  > nav {
+    > ul {
+      display: flex;
+      align-items: center;
+      li {
+        margin-left: 20px;
+        font-size: 15px;
+        color: #404040;
+        cursor: pointer;
+      }
+      li:hover {
+        text-decoration: underline;
+        text-underline-offset: 8px;
+      }
+      li[data-nav='select'] {
+        color: #171717;
+        text-decoration: underline;
+        text-underline-offset: 8px;
+      }
+    }
+  }
+}
