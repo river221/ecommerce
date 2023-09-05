@@ -1,8 +1,8 @@
 section {
   width: 100%;
   max-width: 1200px;
-  min-height: 90vh;
   margin: 0 auto;
+  min-height: 90vh;
   padding: 40px 0;
   @media (max-width: 1200px) {
     padding: 0 16px;

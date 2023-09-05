@@ -7,4 +7,8 @@ export type Products = {
   description: string;
   available_coupon?: boolean;
   maximum_quantity?: number;
+  order?: {
+    quantity: number;
+    date: string;
+  };
 };

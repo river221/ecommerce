@@ -1,6 +1,17 @@
 .container {
+  > label {
+    width: fit-content;
+    display: flex;
+    align-items: center;
+    font-size: 13px;
+    color: #404040;
+    padding: 0 0 10px 20px;
+    > input[type='checkbox'] {
+      margin-right: 8px;
+    }
+  }
   > h2 {
-    margin-bottom: 20px;
+    margin-bottom: 40px;
     font-size: 18px;
     font-weight: 300;
   }
@@ -23,6 +34,8 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  margin-bottom: 4px;
+  font-size: 15px;
   > div {
     display: flex;
     align-items: center;
@@ -33,10 +46,20 @@
       display: flex;
       align-items: center;
       > img {
-        width: 80px;
-        height: 80px;
+        width: 48px;
+        height: 48px;
         margin: 0 24px;
       }
     }
+  }
+  input[type='number'] {
+    width: 60px;
+    text-align: center;
+  }
+  select {
+    margin: 0 20px;
+  }
+  button {
+    margin-left: 10px;
   }
 }
