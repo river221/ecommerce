@@ -1,0 +1,29 @@
+.container {
+  > label {
+    width: fit-content;
+    display: flex;
+    align-items: center;
+    font-size: 13px;
+    color: #404040;
+    padding: 0 0 10px 20px;
+    > input[type='checkbox'] {
+      margin-right: 8px;
+    }
+  }
+  > h2 {
+    margin-bottom: 40px;
+    font-size: 18px;
+    font-weight: 300;
+  }
+  > div:not(:first-of-type) {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 20px;
+    > button {
+      background: #e2e8f0;
+      padding: 8px 40px;
+      border-radius: 5px;
+    }
+  }
+}

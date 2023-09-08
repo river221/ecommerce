@@ -1,6 +1,24 @@
+import { useContext } from 'react';
 import styles from './mypage.module.scss';
+import { TokenContext } from '../../App';
+import { Navigate } from 'react-router-dom';
+import { useQuery } from '@tanstack/react-query';
+import fetcher from '../../utilities/fetcher';
+import { baseUrl } from '../ProductList';
+import { Coupons } from '../../type';
 
 const MyPage = () => {
+  const token = useContext(TokenContext);
+
+  const { data: coupons } = useQuery(
+    ['coupons'],
+    () => {
+      return fetcher(`${baseUrl}/coupons.json`, 'GET');
+    },
+    { enabled: token.user ? true : false }
+  );
+
+  if (!token.user) return <Navigate to="/" replace={true} />;
   return (
     <section className={styles.container}>
       <h2>마이페이지</h2>
@@ -8,10 +26,7 @@ const MyPage = () => {
         <div>
           <h3>쿠폰</h3>
           <div>
-            <ul>
-              <li>20% 할인 쿠폰</li>
-              <li>20% 할인 쿠폰</li>
-            </ul>
+            <ul>{coupons?.map((coupon: Coupons) => <li key={coupon.title}>{coupon.title}</li>)}</ul>
           </div>
         </div>
         <div>
