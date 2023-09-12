@@ -35,6 +35,10 @@ const ProductDetail = () => {
     const cartItems = localStorage.getItem('cart');
     if (cartItems) {
       const inCartItems = JSON.parse(cartItems);
+      if (inCartItems.length >= 10) {
+        alert('최대 10개의 상품을 장바구니에 담을 수 있습니다.');
+        return;
+      }
       const duplicate = inCartItems.find((item: Products) => item.product_no === product.product_no);
       if (duplicate) {
         alert('이미 장바구니에 추가된 상품입니다.');
@@ -52,7 +56,7 @@ const ProductDetail = () => {
       ...product,
       order: {
         quantity: quantity,
-        // price: product.price * quantity,
+        expected_delivery: handleDeliveryTimes(product.prev_delivery_times),
         date: `${today[0]}-${today[1].padStart(2, '0')}-${today[2].padStart(2, '0')}`,
       },
     };

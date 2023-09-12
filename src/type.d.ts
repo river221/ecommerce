@@ -9,17 +9,31 @@ export type Products = {
   maximum_quantity?: number;
 };
 
-export type CartProducts = Products & {
-  order: {
-    quantity: number;
-    date: string;
-  };
+export type Discount = {
+  coupon_type: CouponType;
+  coupon_payment: number;
+  // mileage?: number;
+  // price: number;
 };
 
+type OrderOption = {
+  quantity: number;
+  date: string;
+  expected_delivery: number;
+  discount?: Discount;
+};
+
+export type CartProducts = Products & {
+  order: OrderOption;
+};
+
+export type CouponType = 'rate' | 'amount' | 'conditional_amount';
+
 export interface Coupons {
-  type: 'rate' | 'amount' | 'conditional_amount';
+  type: CouponType;
   title: string;
-  [key: string]: number;
+  isSelect?: boolean;
+  [key: string]: any;
 }
 
 export interface RateCoupon extends Coupons {

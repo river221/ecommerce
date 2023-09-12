@@ -22,6 +22,9 @@
         margin: 0 24px;
       }
     }
+    > button {
+      margin-left: 10px;
+    }
   }
   select {
     width: 60px;
@@ -30,7 +33,21 @@
     margin: 4px 0;
     text-align: center;
   }
-  button {
-    margin-left: 10px;
+  .orderInfo {
+    margin-right: 10px;
+    > p {
+      font-size: 15px;
+    }
+    .cancel {
+      text-decoration: line-through;
+      color: #737373;
+      font-size: 14px;
+      font-weight: 300;
+    }
+    .desc {
+      font-size: 12px;
+      font-weight: 300;
+      color: #737373;
+    }
   }
 }

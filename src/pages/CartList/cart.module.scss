@@ -26,4 +26,48 @@
       border-radius: 5px;
     }
   }
+  .orderInfo {
+    display: flex;
+    flex-direction: column;
+    font-size: 15px;
+    > div {
+      width: 50%;
+      margin: 0 auto;
+      border-bottom: 1px dotted #d4d4d4;
+      padding: 8px 0;
+      text-align: center;
+      > h5 {
+        margin-bottom: 8px;
+        font-weight: 500;
+        letter-spacing: 1px;
+        width: fit-content;
+        border-left: 4px solid #d4d4d4;
+        padding-left: 10px;
+      }
+      > span {
+        display: flex;
+        justify-content: center;
+        strong {
+          text-decoration: underline;
+          text-underline-offset: 7px;
+        }
+        input[type='text'] {
+          border: 1px solid #d4d4d4;
+          border-radius: 5px;
+          margin: 0 8px;
+          width: 100px;
+          text-align: right;
+          padding: 2px 5px;
+          font-size: 15px;
+          font-weight: 500;
+        }
+      }
+      select {
+        border: 1px solid #d4d4d4;
+        border-radius: 5px;
+        font-size: 14px;
+        padding: 2px 5px;
+      }
+    }
+  }
 }
