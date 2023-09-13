@@ -6,6 +6,12 @@ import styles from './productPreview.module.scss';
 const ProductPreview = ({ item }: { item: Products }) => {
   const today = new Date().toLocaleDateString().replaceAll('.', '').split(' ');
 
+  const handleDeliveryTimes = (times: number[]) => {
+    if (times.length < 1) return 2;
+    const total = times.reduce((acc, cur) => acc + cur, 0);
+    return Math.ceil(total / times.length);
+  };
+
   const handleCartItems = (product: Products) => {
     const cartItems = localStorage.getItem('cart');
     if (cartItems) {
@@ -28,6 +34,7 @@ const ProductPreview = ({ item }: { item: Products }) => {
       order: {
         quantity: 1,
         date: `${today[0]}-${today[1].padStart(2, '0')}-${today[2].padStart(2, '0')}`,
+        expected_delivery: handleDeliveryTimes(item.prev_delivery_times),
       },
     };
     handleCartItems(addProduct);

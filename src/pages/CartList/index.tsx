@@ -12,6 +12,13 @@ const CartList = () => {
   const [products, setProducts] = useState(new Map());
   const [coupons, setCoupons] = useState<Coupons[]>([]);
   const [mileage, setMileage] = useState({ default: 0, used: 0 });
+  const [cartCoupon, setCartCoupon] = useState<{ selected: string; coupon: Coupons | undefined }>({
+    selected: '',
+    coupon: undefined,
+  });
+  const [realCost, setRealCost] = useState(0);
+  const [totalPrice, setTotalPrice] = useState(0);
+  const [expectedDate, setExpectedDate] = useState('');
   // const [orders, setOrders] = useState({
   //   products: [],
   //   mileage_payment: 0,
@@ -19,10 +26,54 @@ const CartList = () => {
   //   total_price: 0,
   //   user: '',
   // });
-  // console.log(checklist);
   const { user } = useContext(TokenContext);
 
   const today = new Date().toLocaleDateString().replaceAll('.', '').split(' ');
+
+  const getTotalPrice = (
+    products: Map<number, CartProducts>,
+    checklist: number[],
+    mileage: number,
+    coupon: Coupons | undefined
+  ) => {
+    setTotalPrice(0);
+    setRealCost(0);
+    const orderProduct = Array.from(products.values()).filter(
+      (product: CartProducts) => checklist.includes(product.product_no) && product
+    );
+    orderProduct.map((item: CartProducts) => setRealCost((prev) => prev + item.price * item.order.quantity));
+    orderProduct.map((item: CartProducts) => {
+      if (item.order.discount) {
+        if (item.order.discount.coupon_type === 'rate') {
+          setTotalPrice(
+            (prev) =>
+              prev + (item.price * item.order.quantity * (100 - Number(item.order.discount?.coupon_payment))) / 100
+          );
+        }
+        if (item.order.discount.coupon_type === 'amount') {
+          setTotalPrice(
+            (prev) => prev + (item.price * item.order.quantity - Number(item.order.discount?.coupon_payment))
+          );
+        }
+      } else {
+        setTotalPrice((prev) => prev + item.price * item.order.quantity);
+      }
+    });
+    setTotalPrice((prev) => prev - mileage);
+    coupon && setTotalPrice((prev) => prev - coupon.discountAmount);
+  };
+
+  const handleDeliveryInfo = (products: Map<number, CartProducts>, checklist: number[]) => {
+    const orderProduct = Array.from(products.values()).filter(
+      (product: CartProducts) => checklist.includes(product.product_no) && product
+    );
+    let expectedDate: number[] = [];
+    orderProduct.map((item: CartProducts) => expectedDate.push(item.order.expected_delivery));
+    const period = Math.max(...expectedDate);
+    const today = new Date().getTime();
+    const deliveryTime = 1000 * 60 * 60 * 24 * period;
+    setExpectedDate(new Date(today + deliveryTime).toLocaleDateString().replaceAll('. ', '/').replace('.', ''));
+  };
 
   const submitOrder = (products: Map<number, CartProducts>) => {
     // const orderProduct = Array.from(products.values()).filter(
@@ -57,13 +108,15 @@ const CartList = () => {
 
   const validateMileage = (value: number) => {
     if (value < 0) return 0;
+    if (value > realCost * 0.05) return realCost * 0.05;
     if (value > mileage.default) return mileage.default;
     return value;
   };
 
   const handleMileage = (value: string) => {
     if (!/^[0-9 ]*$/.test(value)) return;
-    setMileage((prev) => ({ ...prev, used: validateMileage(Number(value)) }));
+    const mileage = validateMileage(Number(value));
+    setMileage((prev) => ({ ...prev, used: mileage }));
   };
 
   const getCartItems = () => {
@@ -98,6 +151,14 @@ const CartList = () => {
     if (user) setMileage((prev) => ({ ...prev, default: 30000 }));
   }, [user]);
 
+  useEffect(() => {
+    getTotalPrice(products, checklist, mileage.used, cartCoupon.coupon);
+  }, [products, checklist, coupons, mileage.used, cartCoupon]);
+
+  useEffect(() => {
+    handleDeliveryInfo(products, checklist);
+  }, [products, checklist]);
+
   return (
     <section className={styles.container}>
       <h2>장바구니</h2>
@@ -110,6 +171,7 @@ const CartList = () => {
             } else {
               setChecklist([]);
             }
+            setCartCoupon({ selected: '', coupon: undefined });
           }}
           checked={checklist.length === products.size && products.size > 0}
         />
@@ -127,6 +189,8 @@ const CartList = () => {
               setChecklist={setChecklist}
               coupons={coupons}
               setCoupons={setCoupons}
+              setMileage={setMileage}
+              setCartCoupon={setCartCoupon}
             />
           ))}
       </div>
@@ -135,6 +199,9 @@ const CartList = () => {
           <>
             <div>
               <h5>마일리지</h5>
+              <p className={styles.desc}>
+                쿠폰 적용 이전가의 5% 까지 적용 가능 {realCost > 0 && <b> → {(realCost * 0.05).toLocaleString()}점</b>}
+              </p>
               <span>
                 <p>현재: 30,000</p>
                 <input type="text" value={mileage.used} onChange={(e) => handleMileage(e.target.value)} />
@@ -145,10 +212,23 @@ const CartList = () => {
             </div>
             <div>
               <h5>쿠폰</h5>
-              <select defaultValue={''}>
+              <select
+                value={cartCoupon.selected}
+                onChange={(e) => {
+                  setCartCoupon({
+                    selected: e.target.value,
+                    coupon: coupons.find((item) => item.title === e.target.value),
+                  });
+                }}>
                 <option value={''}>적용 가능한 쿠폰을 선택해주세요.</option>
                 {coupons.map(
-                  (item) => item.type === 'conditional_amount' && <option key={item.title}>{item.title}</option>
+                  (item) =>
+                    item.type === 'conditional_amount' &&
+                    totalPrice > item.minOrderAmount && (
+                      <option key={item.title} value={item.title}>
+                        {item.title}
+                      </option>
+                    )
                 )}
               </select>
             </div>
@@ -156,8 +236,13 @@ const CartList = () => {
         )}
         <div>
           <h5>합계</h5>
-          <b>total price</b>
-          <p>delivery info</p>
+          {realCost > totalPrice && (
+            <p style={{ textDecoration: 'line-through', color: '#737373', fontWeight: '300' }}>
+              {realCost.toLocaleString()}
+            </p>
+          )}
+          <b>{totalPrice.toLocaleString()}원</b>
+          {checklist.length > 0 && <p className={styles.desc}>주문 상품 {expectedDate} 이내 도착 예정</p>}
         </div>
       </div>
       <div>

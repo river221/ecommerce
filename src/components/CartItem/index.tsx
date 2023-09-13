@@ -13,6 +13,8 @@ const CartItem = ({
   setChecklist,
   coupons,
   setCoupons,
+  setMileage,
+  setCartCoupon,
 }: {
   item: CartProducts;
   products: Map<number, CartProducts>;
@@ -21,6 +23,8 @@ const CartItem = ({
   setChecklist: Dispatch<SetStateAction<number[]>>;
   coupons: Coupons[];
   setCoupons: Dispatch<SetStateAction<Coupons[]>>;
+  setMileage: Dispatch<SetStateAction<{ default: number; used: number }>>;
+  setCartCoupon: Dispatch<SetStateAction<{ selected: string; coupon: Coupons | undefined }>>;
 }) => {
   const token = useContext(TokenContext);
 
@@ -39,6 +43,8 @@ const CartItem = ({
       items.splice(selected, 1, updatedItem);
       localStorage.setItem('cart', JSON.stringify(items));
     }
+    setMileage((prev) => ({ ...prev, used: 0 }));
+    setCartCoupon({ selected: '', coupon: undefined });
   };
 
   const deleteItems = (product: CartProducts) => {
@@ -74,6 +80,8 @@ const CartItem = ({
         }
       }, coupons)
     );
+    setMileage((prev) => ({ ...prev, used: 0 }));
+    setCartCoupon({ selected: '', coupon: undefined });
   };
 
   const handleExpectedDate = (period: number) => {
@@ -102,6 +110,8 @@ const CartItem = ({
             } else {
               setChecklist((prev) => prev.filter((product) => product !== item.product_no));
             }
+            setMileage((prev) => ({ ...prev, used: 0 }));
+            setCartCoupon({ selected: '', coupon: undefined });
           }}
           checked={checklist.includes(item.product_no)}
         />
