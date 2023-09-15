@@ -1,0 +1,14 @@
+.page {
+  > button {
+    padding: 4px;
+    background: #eee;
+    margin: 0 2px;
+  }
+  > button:disabled {
+    display: none;
+  }
+  > button[data-index] {
+    background: #000;
+    color: #fff;
+  }
+}

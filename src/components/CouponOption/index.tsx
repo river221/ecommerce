@@ -14,7 +14,6 @@ const CouponOption = ({
   setProducts: Dispatch<SetStateAction<Map<number, CartProducts>>>;
 }) => {
   const [hasOption, setHasOption] = useState(false);
-  // console.log(coupons);
 
   const resetOption = (item: CartProducts) => {
     setHasOption(false);
@@ -52,8 +51,6 @@ const CouponOption = ({
   };
 
   const handleCoupon = (type: CouponType, discountOption: number, item: CartProducts) => {
-    // console.log(`${type} - ${discountOption}`);
-    // console.log(item.product_name);
     setProducts(
       (prev) =>
         new Map([

@@ -19,13 +19,7 @@ const CartList = () => {
   const [realCost, setRealCost] = useState(0);
   const [totalPrice, setTotalPrice] = useState(0);
   const [expectedDate, setExpectedDate] = useState('');
-  // const [orders, setOrders] = useState({
-  //   products: [],
-  //   mileage_payment: 0,
-  //   date: '',
-  //   total_price: 0,
-  //   user: '',
-  // });
+
   const { user } = useContext(TokenContext);
 
   const today = new Date().toLocaleDateString().replaceAll('.', '').split(' ');
@@ -76,16 +70,6 @@ const CartList = () => {
   };
 
   const submitOrder = (products: Map<number, CartProducts>) => {
-    // const orderProduct = Array.from(products.values()).filter(
-    //   (product: CartProducts) => checklist.includes(product.product_no) && product
-    // );
-    // setOrders((prev) => ({
-    //   ...prev,
-    //   mileage_payment: mileage.used,
-    //   date: `${today[0]}-${today[1].padStart(2, '0')}-${today[2].padStart(2, '0')}`,
-    //   total_price: 0,
-    //   user: user ?? '',
-    // }));
     const orderProduct = Array.from(products.values()).reduce((acc: any, cur: CartProducts) => {
       return (
         checklist.includes(cur.product_no) && [
@@ -103,7 +87,14 @@ const CartList = () => {
         ]
       );
     }, []);
-    console.log(orderProduct);
+    console.log({
+      products: orderProduct,
+      mileage_payment: mileage.used,
+      date: `${today[0]}-${today[1].padStart(2, '0')}-${today[2].padStart(2, '0')}`,
+      real_cost: realCost,
+      total_price: totalPrice,
+      user: user,
+    });
   };
 
   const validateMileage = (value: number) => {

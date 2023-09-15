@@ -12,8 +12,6 @@ export type Products = {
 export type Discount = {
   coupon_type: CouponType;
   coupon_payment: number;
-  // mileage?: number;
-  // price: number;
 };
 
 type OrderOption = {

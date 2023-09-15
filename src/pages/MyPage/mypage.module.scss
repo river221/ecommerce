@@ -1,5 +1,13 @@
 .container {
   padding-top: 30px;
+  > h4 {
+    margin: 0 0 8px 32px;
+    font-size: 13px;
+    font-weight: 200;
+    > strong {
+      font-weight: 500;
+    }
+  }
   > h2 {
     margin: 0 0 40px 32px;
     font-size: 20px;

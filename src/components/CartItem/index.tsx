@@ -53,12 +53,6 @@ const CartItem = ({
       const items = JSON.parse(cartItems);
       const remaining = items.filter((item: CartProducts) => item.product_no !== product.product_no);
       localStorage.setItem('cart', JSON.stringify(remaining));
-      // setProducts(
-      //   remaining.reduce(
-      //     (prev: Map<number, CartProducts>, cur: CartProducts) => new Map([...prev, [cur.product_no, { ...cur }]]),
-      //     new Map()
-      //   )
-      // );
       setProducts((products) =>
         Array.from(products.values())
           .filter((item: CartProducts) => item.product_no !== product.product_no)

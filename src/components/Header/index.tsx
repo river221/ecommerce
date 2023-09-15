@@ -6,6 +6,7 @@ import { ReactComponent as LogoutIcon } from '../../assets/sign-out-alt.svg';
 import LoginModal from '../LoginModal';
 import { useContext, useRef, useState } from 'react';
 import { TokenContext } from '../../App';
+import Logo from '../../assets/images/logo.png';
 
 const menu = [
   { id: 1, path: '/products', name: '상품' },
@@ -30,7 +31,9 @@ const Header = () => {
         <LoginModal modalRef={modalRef} clickOutsideModal={clickOutsideModal} setIsOpenPopup={setIsOpenPopup} />
       )}
       <h1>
-        <Link to="/">ECommerce</Link>
+        <Link to="/">
+          <img src={Logo} alt="ecommerce logo" width="80px" />
+        </Link>
       </h1>
       <nav>
         <ul>

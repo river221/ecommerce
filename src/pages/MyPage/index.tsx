@@ -21,6 +21,9 @@ const MyPage = () => {
   if (!token.user) return <Navigate to="/" replace={true} />;
   return (
     <section className={styles.container}>
+      <h4>
+        안녕하세요. <strong>{token.user}</strong> 님 🙂
+      </h4>
       <h2>마이페이지</h2>
       <div className={styles.wrapper}>
         <div>
