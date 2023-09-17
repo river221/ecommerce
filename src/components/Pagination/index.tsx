@@ -96,7 +96,7 @@ const Pagination = ({
             {i}
           </button>
         ))}
-      <button onClick={() => next()} disabled={currentPage === totalPage}>
+      <button onClick={() => next()} disabled={currentPage === totalPage || totalPage <= 1}>
         &gt;
       </button>
       <button
