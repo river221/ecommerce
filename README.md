@@ -1,27 +1,31 @@
-# React + TypeScript + Vite
+# ECommerce
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## NUMBLE 흔들리지 않는 단단한 프론트 개발하기 패션 이커머스 편
 
-Currently, two official plugins are available:
+진행기간: 2023/08/29 ~ 2023/09/18
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+### 🌱 1. 설치 및 실행 방법
 
-## Expanding the ESLint configuration
+- 설치 및 샐행
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
-
-- Configure the top-level `parserOptions` property like this:
-
-```js
-   parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-   },
+```
+npm install
+npm run dev
 ```
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+### ✨ 2. 구현 목록
+
+- [x] 상품 product_no 기준 정렬
+- [x] 상품 예상 배송 기간 및 예상 배송 날짜 표기
+- [x] 상품 목록 페이지네이션
+- [x] 상품 목록 및 상세 페이지에서 장바구니에 추가 (최대 10개 담기 가능)
+- [x] 장바구니에서 상품 목록, 수량, 가격 확인
+- [x] 장바구니에서 체크된 일부 상품만 구매 가능
+- [x] 회원인 경우 정액 할인, 비율 할인, 조건 정액 할인 쿠폰과 마일리지 30,000 포인트 지급
+- [x] 장바구니에서 쿠폰 및 마일리지 할인 적용
+      마일리지는 할인 적용 이전 가격의 5%까지 사용 가능
+      쿠폰 적용 불가 상품은 할인에서 제외
+
+### 💚 3. 사용한 프레임워크 및 라이브러리
+
+React, Typescript, React query

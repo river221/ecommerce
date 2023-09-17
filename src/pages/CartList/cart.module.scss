@@ -25,6 +25,10 @@
       padding: 8px 40px;
       border-radius: 5px;
     }
+    > button:hover {
+      background: #f1f5f9;
+      box-shadow: 2px 2px 4px #e5e5e5;
+    }
   }
   .orderInfo {
     display: flex;

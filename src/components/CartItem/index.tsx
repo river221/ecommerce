@@ -4,6 +4,7 @@ import { ReactComponent as DeleteIcon } from '../../assets/cross-circle.svg';
 import { Dispatch, SetStateAction, useContext } from 'react';
 import CouponOption from '../CouponOption';
 import { TokenContext } from '../../App';
+import { useNavigate } from 'react-router-dom';
 
 const CartItem = ({
   item,
@@ -27,6 +28,7 @@ const CartItem = ({
   setCartCoupon: Dispatch<SetStateAction<{ selected: string; coupon: Coupons | undefined }>>;
 }) => {
   const token = useContext(TokenContext);
+  const navigate = useNavigate();
 
   const setCartItems = (productNo: number, quantity: number) => {
     const cartItems = localStorage.getItem('cart');
@@ -109,7 +111,7 @@ const CartItem = ({
           }}
           checked={checklist.includes(item.product_no)}
         />
-        <span>
+        <span onClick={() => navigate(`../products/${item.product_no}`)}>
           <img src={item.main_image_url} alt={item.product_name} />
           <p>{item.product_name}</p>
         </span>

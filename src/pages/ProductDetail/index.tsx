@@ -77,7 +77,7 @@ const ProductDetail = () => {
                 <p>{product.price.toLocaleString()}원</p>
                 <i>{handleArrivalDate(product.prev_delivery_times)} 도착 예정</i>
                 <br />
-                <i>예상 배송일 {handleDeliveryTimes(product.prev_delivery_times)}일</i>
+                <i>예상 배송기간 {handleDeliveryTimes(product.prev_delivery_times)}일</i>
                 <button onClick={() => setIsSelect(true)}>구매하기</button>
               </div>
               {isSelect && (

@@ -6,6 +6,7 @@ import { TokenContext } from '../../App';
 import { useQuery } from '@tanstack/react-query';
 import fetcher from '../../utilities/fetcher';
 import { baseUrl } from '../ProductList';
+import { useNavigate } from 'react-router-dom';
 
 const CartList = () => {
   const [checklist, setChecklist] = useState<number[]>([]);
@@ -23,6 +24,8 @@ const CartList = () => {
   const { user } = useContext(TokenContext);
 
   const today = new Date().toLocaleDateString().replaceAll('.', '').split(' ');
+
+  const navigate = useNavigate();
 
   const getTotalPrice = (
     products: Map<number, CartProducts>,
@@ -95,6 +98,11 @@ const CartList = () => {
       total_price: totalPrice,
       user: user,
     });
+    if (confirm(`총 ${totalPrice.toLocaleString()}원 구매하시겠습니까?`)) {
+      localStorage.removeItem('cart');
+      alert('주문이 완료되었습니다.');
+      navigate('/');
+    }
   };
 
   const validateMileage = (value: number) => {
@@ -233,7 +241,7 @@ const CartList = () => {
             </p>
           )}
           <b>{totalPrice.toLocaleString()}원</b>
-          {checklist.length > 0 && <p className={styles.desc}>주문 상품 {expectedDate} 이내 도착 예정</p>}
+          {checklist.length > 0 && <p className={styles.desc}>주문 상품 {expectedDate} 도착 예정</p>}
         </div>
       </div>
       <div>

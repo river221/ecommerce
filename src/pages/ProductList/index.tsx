@@ -9,7 +9,7 @@ import Pagination from '../../components/Pagination';
 export const baseUrl = import.meta.env.VITE_APP_API_URL;
 
 const ProductList = () => {
-  let limit = 20;
+  let limit = 8;
   const [currentPage, setCurrentPage] = useState(1);
   const [currentPageBlock, setCurrentPageBlock] = useState(0);
   const [totalPage, setTotalPage] = useState(0);
