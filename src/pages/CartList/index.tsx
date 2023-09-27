@@ -2,11 +2,12 @@ import styles from './cart.module.scss';
 import { useContext, useEffect, useState } from 'react';
 import { CartProducts, Coupons } from '../../type';
 import CartItem from '../../components/CartItem';
-import { TokenContext } from '../../App';
+import { AuthContext } from '../../App';
 import { useQuery } from '@tanstack/react-query';
 import fetcher from '../../utilities/fetcher';
 import { baseUrl } from '../ProductList';
 import { useNavigate } from 'react-router-dom';
+import { persist } from '../../utilities/persist';
 
 const CartList = () => {
   const [checklist, setChecklist] = useState<number[]>([]);
@@ -21,7 +22,7 @@ const CartList = () => {
   const [totalPrice, setTotalPrice] = useState(0);
   const [expectedDate, setExpectedDate] = useState('');
 
-  const { user } = useContext(TokenContext);
+  const { user } = useContext(AuthContext);
 
   const today = new Date().toLocaleDateString().replaceAll('.', '').split(' ');
 
@@ -38,8 +39,8 @@ const CartList = () => {
     const orderProduct = Array.from(products.values()).filter(
       (product: CartProducts) => checklist.includes(product.product_no) && product
     );
-    orderProduct.map((item: CartProducts) => setRealCost((prev) => prev + item.price * item.order.quantity));
-    orderProduct.map((item: CartProducts) => {
+    orderProduct.forEach((item: CartProducts) => setRealCost((prev) => prev + item.price * item.order.quantity));
+    orderProduct.forEach((item: CartProducts) => {
       if (item.order.discount) {
         if (item.order.discount.coupon_type === 'rate') {
           setTotalPrice(
@@ -119,16 +120,15 @@ const CartList = () => {
   };
 
   const getCartItems = () => {
-    const cartItems = localStorage.getItem('cart');
+    const cartItems = persist.getLocalStorage('cart');
     if (cartItems) {
-      const items = JSON.parse(cartItems);
       setProducts(
-        items.reduce(
+        cartItems.reduce(
           (prev: Map<number, CartProducts>, cur: CartProducts) => new Map([...prev, [cur.product_no, { ...cur }]]),
           new Map()
         )
       );
-      setChecklist([...new Set([...items.map((item: CartProducts) => item.product_no)])]);
+      setChecklist([...new Set([...cartItems.map((item: CartProducts) => item.product_no)])]);
     }
   };
 

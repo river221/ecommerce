@@ -5,7 +5,7 @@ import { ReactComponent as LoginIcon } from '../../assets/sign-in-alt.svg';
 import { ReactComponent as LogoutIcon } from '../../assets/sign-out-alt.svg';
 import LoginModal from '../LoginModal';
 import { useContext, useRef, useState } from 'react';
-import { TokenContext } from '../../App';
+import { AuthContext } from '../../App';
 import Logo from '../../assets/images/logo.png';
 
 const menu = [
@@ -19,7 +19,7 @@ const Header = () => {
   const modalRef = useRef<HTMLDivElement>(null);
   const [isOpenPopup, setIsOpenPopup] = useState(false);
 
-  const token = useContext(TokenContext);
+  const auth = useContext(AuthContext);
 
   const clickOutsideModal = (e: any) => {
     if (modalRef.current === e.target) setIsOpenPopup(false);
@@ -42,7 +42,7 @@ const Header = () => {
               <Link to={item.path}>{item.name}</Link>
             </li>
           ))}
-          {!token.user ? (
+          {!auth.user ? (
             <li onClick={() => setIsOpenPopup(true)}>
               <LoginIcon width="16px" height="16px" />
             </li>
@@ -56,7 +56,7 @@ const Header = () => {
               <li
                 onClick={() => {
                   sessionStorage.removeItem('user');
-                  token.setUser(null);
+                  auth.setUser(null);
                   navigate('/');
                 }}>
                 <LogoutIcon width="18px" height="18px" />

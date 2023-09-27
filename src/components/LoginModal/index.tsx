@@ -1,6 +1,6 @@
 import { Dispatch, ForwardedRef, SetStateAction, useContext, useRef, useState } from 'react';
 import styles from './loginModal.module.scss';
-import { TokenContext } from '../../App';
+import { AuthContext } from '../../App';
 
 const LoginModal = ({
   modalRef,
@@ -13,7 +13,7 @@ const LoginModal = ({
 }) => {
   const emailRef = useRef<HTMLInputElement>(null);
   const [errorMessage, setErrorMessage] = useState('');
-  const token = useContext(TokenContext);
+  const auth = useContext(AuthContext);
 
   const validateEmail = (email: string) => {
     const emailRegex = /^\S+@\S+\.\S+$/;
@@ -30,7 +30,7 @@ const LoginModal = ({
       const isValidate = validateEmail(emailRef.current.value);
       if (isValidate) sessionStorage.setItem('user', emailRef.current.value);
       if (sessionStorage.getItem('user')) {
-        token.setUser(sessionStorage.getItem('user'));
+        auth.setUser(sessionStorage.getItem('user'));
         setIsOpenPopup(false);
       }
     }

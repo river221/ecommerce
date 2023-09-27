@@ -1,9 +1,9 @@
-import { Dispatch, SetStateAction, createContext, useEffect, useState } from 'react';
+import { Dispatch, ReactNode, SetStateAction, createContext, useEffect, useState } from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
 import Header from './components/Header';
 import Footer from './components/Footer';
 
-export const TokenContext = createContext<{
+export const AuthContext = createContext<{
   user: string | null;
   setUser: Dispatch<SetStateAction<string | null>>;
 }>({
@@ -11,24 +11,29 @@ export const TokenContext = createContext<{
   setUser: () => {},
 });
 
-function App() {
+const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<string | null>(null);
-  const { pathname } = useLocation();
 
   useEffect(() => {
     setUser(sessionStorage.getItem('user'));
   }, []);
+
+  return <AuthContext.Provider value={{ user, setUser }}>{children}</AuthContext.Provider>;
+};
+
+function App() {
+  const { pathname } = useLocation();
 
   useEffect(() => {
     !pathname.includes('products') && sessionStorage.removeItem('page');
   }, [pathname]);
 
   return (
-    <TokenContext.Provider value={{ user, setUser }}>
+    <AuthProvider>
       <Header />
       <Outlet />
       <Footer />
-    </TokenContext.Provider>
+    </AuthProvider>
   );
 }
 

@@ -9,9 +9,8 @@ import Pagination from '../../components/Pagination';
 export const baseUrl = import.meta.env.VITE_APP_API_URL;
 
 const ProductList = () => {
-  let limit = 8;
-  const [currentPage, setCurrentPage] = useState(1);
-  const [currentPageBlock, setCurrentPageBlock] = useState(0);
+  const limit = 8;
+  const pageLimit = 5;
   const [totalPage, setTotalPage] = useState(0);
   const [firstCount, setFirstCount] = useState(0);
 
@@ -30,16 +29,7 @@ const ProductList = () => {
   return (
     <section className={styles.container}>
       <div>{productList?.map((item: Products) => <ProductPreview item={item} key={item.product_no} />)}</div>
-      <Pagination
-        limit={limit}
-        totalPage={totalPage}
-        currentPage={currentPage}
-        setCurrentPage={setCurrentPage}
-        currentPageBlock={currentPageBlock}
-        setCurrentPageBlock={setCurrentPageBlock}
-        firstCount={firstCount}
-        setFirstCount={setFirstCount}
-      />
+      <Pagination limit={limit} pageLimit={pageLimit} totalPage={totalPage} setFirstCount={setFirstCount} />
     </section>
   );
 };

@@ -3,7 +3,7 @@ import styles from './cartItem.module.scss';
 import { ReactComponent as DeleteIcon } from '../../assets/cross-circle.svg';
 import { Dispatch, SetStateAction, useContext } from 'react';
 import CouponOption from '../CouponOption';
-import { TokenContext } from '../../App';
+import { AuthContext } from '../../App';
 import { useNavigate } from 'react-router-dom';
 
 const CartItem = ({
@@ -27,7 +27,7 @@ const CartItem = ({
   setMileage: Dispatch<SetStateAction<{ default: number; used: number }>>;
   setCartCoupon: Dispatch<SetStateAction<{ selected: string; coupon: Coupons | undefined }>>;
 }) => {
-  const token = useContext(TokenContext);
+  const auth = useContext(AuthContext);
   const navigate = useNavigate();
 
   const setCartItems = (productNo: number, quantity: number) => {
@@ -146,7 +146,7 @@ const CartItem = ({
             도착 예정
           </p>
         </div>
-        {token.user && <CouponOption coupons={coupons} setCoupons={setCoupons} item={item} setProducts={setProducts} />}
+        {auth.user && <CouponOption coupons={coupons} setCoupons={setCoupons} item={item} setProducts={setProducts} />}
         <button onClick={() => deleteItems(item)}>
           <DeleteIcon width="16px" height="16px" fill="#737373" />
         </button>

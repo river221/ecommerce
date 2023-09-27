@@ -1,6 +1,6 @@
 import { useContext } from 'react';
 import styles from './mypage.module.scss';
-import { TokenContext } from '../../App';
+import { AuthContext } from '../../App';
 import { Navigate } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import fetcher from '../../utilities/fetcher';
@@ -8,21 +8,21 @@ import { baseUrl } from '../ProductList';
 import { Coupons } from '../../type';
 
 const MyPage = () => {
-  const token = useContext(TokenContext);
+  const auth = useContext(AuthContext);
 
   const { data: coupons } = useQuery(
     ['coupons'],
     () => {
       return fetcher(`${baseUrl}/coupons.json`, 'GET');
     },
-    { enabled: token.user ? true : false }
+    { enabled: auth.user ? true : false }
   );
 
-  if (!token.user) return <Navigate to="/" replace={true} />;
+  if (!auth.user) return <Navigate to="/" replace={true} />;
   return (
     <section className={styles.container}>
       <h4>
-        안녕하세요. <strong>{token.user}</strong> 님 🙂
+        안녕하세요. <strong>{auth.user}</strong> 님 🙂
       </h4>
       <h2>마이페이지</h2>
       <div className={styles.wrapper}>
