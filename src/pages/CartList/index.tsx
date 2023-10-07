@@ -28,6 +28,12 @@ const CartList = () => {
 
   const navigate = useNavigate();
 
+  const getCheckedProduct = (products: Map<number, CartProducts>, checklist: number[]) => {
+    return Array.from(products.values()).filter(
+      (product: CartProducts) => checklist.includes(product.product_no) && product
+    );
+  };
+
   const getTotalPrice = (
     products: Map<number, CartProducts>,
     checklist: number[],
@@ -36,9 +42,7 @@ const CartList = () => {
   ) => {
     setTotalPrice(0);
     setRealCost(0);
-    const orderProduct = Array.from(products.values()).filter(
-      (product: CartProducts) => checklist.includes(product.product_no) && product
-    );
+    const orderProduct = getCheckedProduct(products, checklist);
     orderProduct.forEach((item: CartProducts) => setRealCost((prev) => prev + item.price * item.order.quantity));
     orderProduct.forEach((item: CartProducts) => {
       if (item.order.discount) {
@@ -62,9 +66,7 @@ const CartList = () => {
   };
 
   const handleDeliveryInfo = (products: Map<number, CartProducts>, checklist: number[]) => {
-    const orderProduct = Array.from(products.values()).filter(
-      (product: CartProducts) => checklist.includes(product.product_no) && product
-    );
+    const orderProduct = getCheckedProduct(products, checklist);
     let expectedDate: number[] = [];
     orderProduct.map((item: CartProducts) => expectedDate.push(item.order.expected_delivery));
     const period = Math.max(...expectedDate);

@@ -5,6 +5,7 @@ import { Dispatch, SetStateAction, useContext } from 'react';
 import CouponOption from '../CouponOption';
 import { AuthContext } from '../../App';
 import { useNavigate } from 'react-router-dom';
+import { persist } from '../../utilities/persist';
 
 const CartItem = ({
   item,
@@ -31,30 +32,28 @@ const CartItem = ({
   const navigate = useNavigate();
 
   const setCartItems = (productNo: number, quantity: number) => {
-    const cartItems = localStorage.getItem('cart');
+    const cartItems = persist.getLocalStorage('cart');
     if (cartItems) {
-      const items = JSON.parse(cartItems);
-      const selected = items.findIndex((item: CartProducts) => item.product_no === productNo);
+      const selected = cartItems.findIndex((item: CartProducts) => item.product_no === productNo);
       const updatedItem: CartProducts = {
-        ...items[selected],
+        ...cartItems[selected],
         order: {
-          ...items[selected].order,
+          ...cartItems[selected].order,
           quantity: quantity,
         },
       };
-      items.splice(selected, 1, updatedItem);
-      localStorage.setItem('cart', JSON.stringify(items));
+      cartItems.splice(selected, 1, updatedItem);
+      persist.setLocalStorage('cart', cartItems);
     }
     setMileage((prev) => ({ ...prev, used: 0 }));
     setCartCoupon({ selected: '', coupon: undefined });
   };
 
   const deleteItems = (product: CartProducts) => {
-    const cartItems = localStorage.getItem('cart');
+    const cartItems = persist.getLocalStorage('cart');
     if (cartItems) {
-      const items = JSON.parse(cartItems);
-      const remaining = items.filter((item: CartProducts) => item.product_no !== product.product_no);
-      localStorage.setItem('cart', JSON.stringify(remaining));
+      const remaining = cartItems.filter((item: CartProducts) => item.product_no !== product.product_no);
+      persist.setLocalStorage('cart', remaining);
       setProducts((products) =>
         Array.from(products.values())
           .filter((item: CartProducts) => item.product_no !== product.product_no)
